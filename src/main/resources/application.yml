@@ -1,0 +1,28 @@
+server:
+  port: 8086
+  
+info:
+  app:
+    name: Stock Service
+    description: 
+    version: 0.0.1
+    
+spring:
+  application:
+    name: Stock Service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+      database: StockDB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+        exclude: 
+        
+logging:
+  level:
+    root: INFO
+    org.package: INFO
