@@ -1,7 +1,5 @@
 package com.stock.microservice.controller;
 
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +59,7 @@ public class StockController {
 		try {
 			CompanyDto company = stockService.filterStocks(companyCode, startDate, endDate);
 			if(company != null && company.getStocks().size() > 0) {
-				message.setCode("FILTER_STOCK_SUCESS");
+				message.setCode("FILTER_STOCK_SUCCESS");
 				message.setDescription("Stocks Fetched");
 				response.withData(company);
 				response.withMessage(message);
