@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,7 +60,7 @@ class StockServiceTest {
 	public void filterStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
 		stocks.add(getStockDaoObject());
-		when(stockRepository.filterStock("abc", "12-01-2022", "21-01-2022")).thenReturn(stocks);
+		when(stockRepository.filterStock("abc", any(Date.class), any(Date.class))).thenReturn(stocks);
 		when(restTemplate.getForEntity(anyString(), ResponseData.class)).thenReturn(null);
 		CompanyDto company = stockService.filterStocks("abc", "12-01-2022", "21-01-2022");
 		
@@ -78,11 +79,10 @@ class StockServiceTest {
 
 	private StockDao getStockDaoObject() {
 		StockDao stock = new StockDao();
-		stock.setEndDate("21-01-2022");
 		stock.setPrice(200.50);
 		stock.setStockId(UUID.randomUUID().toString());
-		stock.setStartDate("12-01-2022");
-		stock.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
+		stock.setDate(new Date());
+		stock.setTimeStamp(new Date().getTime());
 		return stock;
 	}
 
