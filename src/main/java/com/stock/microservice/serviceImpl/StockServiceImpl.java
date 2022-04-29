@@ -22,16 +22,30 @@ import com.stock.microservice.entity.StockDao;
 import com.stock.microservice.repository.StockRepository;
 import com.stock.microservice.service.StockService;
 
+/**
+ * The Class StockServiceImpl.
+ */
 @Service
 public class StockServiceImpl implements StockService {
 
+	/** The application log. */
 	private final Logger applicationLog = LoggerFactory.getLogger("[APPLICATION]");
 
+	/** The error log. */
 	private final Logger errorLog = LoggerFactory.getLogger("[ERROR]");
 
+	/** The stock repository. */
 	@Autowired
 	StockRepository stockRepository;
 
+	/**
+	 * Adds the company stock.
+	 *
+	 * @param companyCode the company code
+	 * @param requestBody the request body
+	 * @return the boolean
+	 * @throws Exception the exception
+	 */
 	@Override
 	public Boolean addCompanyStock(String companyCode, String requestBody) throws Exception {
 		applicationLog.info("Entering addCompanyStock Service");
@@ -56,6 +70,15 @@ public class StockServiceImpl implements StockService {
 		return isSuccessful;
 	}
 
+	/**
+	 * Filter stocks.
+	 *
+	 * @param companyCode the company code
+	 * @param startDate   the start date
+	 * @param endDate     the end date
+	 * @return the company dto
+	 * @throws Exception the exception
+	 */
 	@Override
 	public CompanyDto filterStocks(String companyCode, String startDate, String endDate) throws Exception {
 		applicationLog.info("Entering filterStocks Service");
@@ -103,12 +126,12 @@ public class StockServiceImpl implements StockService {
 
 				stockPrices.add(stock.getPrice());
 			}
-			
+
 			OptionalDouble average = stockPrices.stream().mapToDouble(a -> a).average();
 			companyDetails.setAvgStockPrice(average.isPresent() ? average.getAsDouble() : 0);
 			companyDetails.setMinStockPrice(minPrice);
 			companyDetails.setMaxStockPrice(maxPrice);
-			
+
 			companyDetails.setStocks(stockDtos);
 		}
 
@@ -116,6 +139,13 @@ public class StockServiceImpl implements StockService {
 		return companyDetails;
 	}
 
+	/**
+	 * Fetch latest stock price.
+	 *
+	 * @param companyCode the company code
+	 * @return the double
+	 * @throws Exception the exception
+	 */
 	@Override
 	public Double fetchLatestStockPrice(String companyCode) throws Exception {
 		applicationLog.info("Entering fetchLatestStockPrice Service");
@@ -132,6 +162,13 @@ public class StockServiceImpl implements StockService {
 		return latestStock;
 	}
 
+	/**
+	 * Delete company stocks.
+	 *
+	 * @param companyCode the company code
+	 * @return the boolean
+	 * @throws Exception the exception
+	 */
 	@Override
 	public Boolean deleteCompanyStocks(String companyCode) throws Exception {
 		applicationLog.info("Entering deleteCompanyStocks Service");

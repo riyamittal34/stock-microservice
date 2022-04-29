@@ -18,17 +18,30 @@ import com.stock.microservice.dto.ResponseMessage;
 import com.stock.microservice.dto.StockResponse;
 import com.stock.microservice.service.StockService;
 
+/**
+ * The Class StockController.
+ */
 @Controller
 @RequestMapping("/api/v1.0/market/stock")
 public class StockController {
 
+	/** The application log. */
 	private final Logger applicationLog = LoggerFactory.getLogger("[APPLICATION]");
 
+	/** The error log. */
 	private final Logger errorLog = LoggerFactory.getLogger("[ERROR]");
 
+	/** The stock service. */
 	@Autowired
 	StockService stockService;
 
+	/**
+	 * Adds the company stock.
+	 *
+	 * @param companyCode the company code
+	 * @param requestBody the request body
+	 * @return the response entity
+	 */
 	@PostMapping(value = "/add/{companycode}")
 	public ResponseEntity<StockResponse<Boolean>> addCompanyStock(@PathVariable("companycode") String companyCode,
 			@RequestBody String requestBody) {
@@ -51,6 +64,14 @@ public class StockController {
 		}
 	}
 
+	/**
+	 * Filter stocks.
+	 *
+	 * @param companyCode the company code
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return the response entity
+	 */
 	@GetMapping(value = "/get/{companycode}/{startdate}/{enddate}")
 	public ResponseEntity<StockResponse<CompanyDto>> filterStocks(@PathVariable("companycode") String companyCode,
 			@PathVariable("startdate") String startDate, @PathVariable("enddate") String endDate) {
@@ -85,6 +106,12 @@ public class StockController {
 		}
 	}
 
+	/**
+	 * Fetch latest stock price.
+	 *
+	 * @param companyCode the company code
+	 * @return the response entity
+	 */
 	@GetMapping(value = "/get/stockPrice/{companycode}")
 	public ResponseEntity<StockResponse<Double>> fetchLatestStockPrice(
 			@PathVariable("companycode") String companyCode) {
@@ -119,6 +146,12 @@ public class StockController {
 		}
 	}
 
+	/**
+	 * Delete company stocks.
+	 *
+	 * @param companyCode the company code
+	 * @return the response entity
+	 */
 	@DeleteMapping(value = "/delete/{companycode}")
 	public ResponseEntity<StockResponse<Boolean>> deleteCompanyStocks(@PathVariable("companycode") String companyCode) {
 		applicationLog.info("Entering deleteCompanyStocks Controller");

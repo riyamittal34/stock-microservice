@@ -26,16 +26,26 @@ import com.stock.microservice.dto.CompanyDto;
 import com.stock.microservice.dto.StockDto;
 import com.stock.microservice.service.StockService;
 
+/**
+ * The Class StockControllerTest.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class StockControllerTest {
 
+	/** The mock mvc. */
 	@Autowired
 	private MockMvc mockMvc;
 
+	/** The stock service. */
 	@MockBean
 	StockService stockService;
 
+	/**
+	 * Adds the company stock test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void addCompanyStockTest() throws Exception {
 
@@ -44,6 +54,11 @@ class StockControllerTest {
 				.andExpect(status().isOk()).andExpect(content().string(containsString("true"))).andReturn();
 	}
 
+	/**
+	 * Adds the company stock exception test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void addCompanyStockExceptionTest() throws Exception {
 
@@ -53,6 +68,11 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("STOCK_ADD_FAILED"))).andReturn();
 	}
 
+	/**
+	 * Filter stocks test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void filterStocksTest() throws Exception {
 
@@ -62,6 +82,11 @@ class StockControllerTest {
 				.andReturn();
 	}
 
+	/**
+	 * Filter stocks null data test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void filterStocksNullDataTest() throws Exception {
 
@@ -71,6 +96,11 @@ class StockControllerTest {
 				.andReturn();
 	}
 
+	/**
+	 * Filter stocks exception test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void filterStocksExceptionTest() throws Exception {
 
@@ -80,6 +110,12 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("FILTER_STOCK_FAILED"))).andReturn();
 	}
 
+	/**
+	 * Gets the latest stock price test.
+	 *
+	 * @return the latest stock price test
+	 * @throws Exception the exception
+	 */
 	@Test
 	void getLatestStockPriceTest() throws Exception {
 
@@ -88,6 +124,12 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("LATEST_STOCK_PRICE_FETCHED"))).andReturn();
 	}
 
+	/**
+	 * Gets the latest stock price null data test.
+	 *
+	 * @return the latest stock price null data test
+	 * @throws Exception the exception
+	 */
 	@Test
 	void getLatestStockPriceNullDataTest() throws Exception {
 
@@ -97,6 +139,12 @@ class StockControllerTest {
 				.andReturn();
 	}
 
+	/**
+	 * Gets the latest stock price exception test.
+	 *
+	 * @return the latest stock price exception test
+	 * @throws Exception the exception
+	 */
 	@Test
 	void getLatestStockPriceExceptionTest() throws Exception {
 
@@ -106,6 +154,11 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("LATEST_STOCK_FETCH_FAILED"))).andReturn();
 	}
 
+	/**
+	 * Delete company stocks test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	void deleteCompanyStocksTest() throws Exception {
 
@@ -114,6 +167,11 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("COMPANY_STOCK_DELETED"))).andReturn();
 	}
 
+	/**
+	 * Delete company stocks exception test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	void deleteCompanyStocksExceptionTest() throws Exception {
 
@@ -123,6 +181,11 @@ class StockControllerTest {
 				.andExpect(content().string(containsString("COMPANY_STOCK_DELETE_FAILED"))).andReturn();
 	}
 
+	/**
+	 * Gets the stock object.
+	 *
+	 * @return the stock object
+	 */
 	private StockDto getStockObject() {
 		StockDto stock = new StockDto();
 		stock.setPrice(200.50);
@@ -132,6 +195,11 @@ class StockControllerTest {
 		return stock;
 	}
 
+	/**
+	 * Gets the company object.
+	 *
+	 * @return the company object
+	 */
 	private CompanyDto getCompanyObject() {
 		CompanyDto company = new CompanyDto();
 		company.setCompanyCode("abc");

@@ -29,19 +29,30 @@ import com.stock.microservice.entity.StockDao;
 import com.stock.microservice.repository.StockRepository;
 import com.stock.microservice.serviceImpl.StockServiceImpl;
 
+/**
+ * The Class StockServiceTest.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class StockServiceTest {
 
+	/** The stock service. */
 	@InjectMocks
 	StockServiceImpl stockService;
 
+	/** The stock repository. */
 	@Mock
 	StockRepository stockRepository;
 	
+	/** The rest template. */
 	@MockBean
 	RestTemplate restTemplate;
 
+	/**
+	 * Adds the company stock test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void addCompanyStockTest() throws Exception {
 
@@ -52,6 +63,11 @@ class StockServiceTest {
 		assertTrue(isSuccess);
 	}
 
+	/**
+	 * Adds the company stock mapping exception test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void addCompanyStockMappingExceptionTest() throws Exception {
 		Assertions.assertThrows(Exception.class, () -> {
@@ -59,6 +75,11 @@ class StockServiceTest {
 		});
 	}
 	
+	/**
+	 * Filter stocks test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void filterStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
@@ -79,6 +100,11 @@ class StockServiceTest {
 		assertEquals(1, company.getStocks().size());
 	}
 	
+	/**
+	 * Fetch latest stock price test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void fetchLatestStockPriceTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
@@ -90,6 +116,11 @@ class StockServiceTest {
 		assertEquals(200.50, price);
 	}
 	
+	/**
+	 * Delete company stocks test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void deleteCompanyStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
@@ -101,6 +132,11 @@ class StockServiceTest {
 		assertTrue(isSuccessful);
 	}
 
+	/**
+	 * Gets the stock object.
+	 *
+	 * @return the stock object
+	 */
 	private StockDto getStockObject() {
 		StockDto stock = new StockDto();
 		stock.setPrice(200.50);
@@ -110,6 +146,11 @@ class StockServiceTest {
 		return stock;
 	}
 
+	/**
+	 * Gets the stock dao object.
+	 *
+	 * @return the stock dao object
+	 */
 	private StockDao getStockDaoObject() {
 		StockDao stock = new StockDao();
 		stock.setPrice(200.50);
@@ -119,6 +160,11 @@ class StockServiceTest {
 		return stock;
 	}
 
+	/**
+	 * Gets the company object.
+	 *
+	 * @return the company object
+	 */
 	private CompanyDto getCompanyObject() {
 		CompanyDto company = new CompanyDto();
 		company.setCompanyCode("abc");
