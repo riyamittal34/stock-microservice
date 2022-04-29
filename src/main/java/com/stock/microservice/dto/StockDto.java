@@ -1,12 +1,14 @@
 package com.stock.microservice.dto;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class StockDto {
 
 	private String stockId;
-	private String startDate;
-	private String endDate;
+	private Date date;
 	private Double price;
-	private String timeStamp;
+	private Long timeStamp;
 
 	public String getStockId() {
 		return stockId;
@@ -16,20 +18,12 @@ public class StockDto {
 		this.stockId = stockId;
 	}
 
-	public String getStartDate() {
-		return startDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Double getPrice() {
@@ -40,11 +34,11 @@ public class StockDto {
 		this.price = price;
 	}
 
-	public String getTimeStamp() {
+	public Long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
+	public void setTimeStamp(Long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 }

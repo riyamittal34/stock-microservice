@@ -12,7 +12,7 @@ spring:
     name: Stock Service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+      uri: mongodb+srv://riya_mittal:riya%40123%21%21@cluster0.c4pby.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
       database: StockDB
 
 management:

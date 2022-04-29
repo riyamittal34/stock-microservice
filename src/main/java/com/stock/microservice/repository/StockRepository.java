@@ -10,6 +10,8 @@ import com.stock.microservice.entity.StockDao;
 
 public interface StockRepository extends MongoRepository<StockDao, String> {
 
-	@Query("{'companyCode': ?0, 'startDate': ?1, 'endDate': ?2}")
-	public List<StockDao> filterStock(String companyCode, String startDate, String endDate);
+	@Query("{'companyCode': ?0, 'date': {$gte: ?1}, 'date': {$lte: ?2}}")
+	public List<StockDao> filterStock(String companyCode, Date startDate, Date endDate);
+
+	public List<StockDao> findByCompanyCode(String companyCode);
 }

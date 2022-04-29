@@ -9,4 +9,8 @@ public interface StockService {
 	public Boolean addCompanyStock(String companyCode, String requestBody) throws Exception;
 
 	public CompanyDto filterStocks(String companyCode, String startDate, String endDate) throws Exception;
+	
+	public Double fetchLatestStockPrice(String companyCode) throws Exception;
+	
+	public Boolean deleteCompanyStocks(String companyCode) throws Exception;
 }

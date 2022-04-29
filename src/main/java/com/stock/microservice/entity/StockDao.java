@@ -1,18 +1,20 @@
 package com.stock.microservice.entity;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("stock")
+@Document("Stock")
 public class StockDao {
 
 	@Id
 	private String stockId;
 	private String companyCode;
-	private String startDate;
-	private String endDate;
+	private Date date;
 	private Double price;
-	private String timeStamp;
+	private Long timeStamp;
 
 	public String getStockId() {
 		return stockId;
@@ -30,20 +32,12 @@ public class StockDao {
 		this.companyCode = companyCode;
 	}
 
-	public String getStartDate() {
-		return startDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Double getPrice() {
@@ -54,11 +48,11 @@ public class StockDao {
 		this.price = price;
 	}
 
-	public String getTimeStamp() {
+	public Long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
+	public void setTimeStamp(Long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 }
