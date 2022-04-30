@@ -9,11 +9,9 @@ info:
     
 spring:
   application:
-    name: Stock Service
-  data:
-    mongodb:
-      uri: mongodb+srv://riya_mittal:riya%40123%21%21@cluster0.c4pby.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-      database: StockDB
+    name: stock-microservice
+  config:
+    import: optional:configserver:http://localhost:8888/ 
 
 management:
   endpoints:
@@ -21,8 +19,4 @@ management:
       exposure:
         include: "health,info,metrics"
         exclude: 
-        
-logging:
-  level:
-    root: INFO
-    org.package: INFO
+
