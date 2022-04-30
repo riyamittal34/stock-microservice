@@ -1,12 +1,3 @@
-server:
-  port: 8086
-  
-info:
-  app:
-    name: Stock Service
-    description: 
-    version: 0.0.1
-    
 spring:
   application:
     name: stock-microservice
