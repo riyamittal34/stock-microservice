@@ -38,6 +38,9 @@ public class StockServiceImpl implements StockService {
 	@Autowired
 	StockRepository stockRepository;
 
+	@Autowired
+	RestTemplate restTemplate;
+
 	/**
 	 * Adds the company stock.
 	 *
@@ -93,9 +96,9 @@ public class StockServiceImpl implements StockService {
 		endDateFormatted = c.getTime();
 
 		List<StockDao> stocks = stockRepository.filterStock(companyCode, startDateFormatted, endDateFormatted);
-		String companyUrl = "http://localhost:8085/api/v1.0/market/company/info/" + companyCode;
+		String companyUrl = "http://stock-market-service/api/v1.0/market/company/info/" + companyCode;
 		applicationLog.info("companyUrl: {}", companyUrl);
-		RestTemplate restTemplate = new RestTemplate();
+
 		ResponseEntity<ResponseData> response = restTemplate.getForEntity(companyUrl, ResponseData.class);
 		applicationLog.info("response: {}", response.getStatusCode());
 		CompanyDto companyDetails = null;
