@@ -1,0 +1,24 @@
+
+server:  port: 8086
+  
+spring:
+  application:
+    name: stock-microservice
+  config:
+    import: optional:configserver:http://localhost:8888/ 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+        exclude: 
+        
+logging: 
+  file: 
+    name: C:\Users\User\Desktop\Gi_Workspace\logs\stock.log
+  level:
+    root: INFO
+    org.package: INFO
+
+  

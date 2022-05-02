@@ -99,45 +99,49 @@ public class StockServiceImpl implements StockService {
 		String companyUrl = "http://stock-market-service/api/v1.0/market/company/info/" + companyCode;
 		applicationLog.info("companyUrl: {}", companyUrl);
 
-		ResponseEntity<ResponseData> response = restTemplate.getForEntity(companyUrl, ResponseData.class);
-		applicationLog.info("response: {}", response.getStatusCode());
 		CompanyDto companyDetails = null;
-		if (response.getStatusCode().is2xxSuccessful()) {
-			applicationLog.info("responseBody: {}", response.getBody());
-			ResponseData responseData = response.getBody();
-			companyDetails = responseData.getData();
+		ResponseEntity<ResponseData> response = null;
+		try {
+			response = restTemplate.getForEntity(companyUrl, ResponseData.class);
+			applicationLog.info("response: {}", response.getStatusCode());
+			if (response.getStatusCode().is2xxSuccessful()) {
+				applicationLog.info("responseBody: {}", response.getBody());
+				ResponseData responseData = response.getBody();
+				companyDetails = responseData.getData();
 
-			List<Double> stockPrices = new ArrayList<Double>();
-			Double maxPrice = null;
-			Double minPrice = null;
+				List<Double> stockPrices = new ArrayList<Double>();
+				Double maxPrice = null;
+				Double minPrice = null;
 
-			List<StockDto> stockDtos = new ArrayList<StockDto>();
-			for (StockDao stock : stocks) {
-				StockDto stockDto = new StockDto();
-				stockDto.setPrice(stock.getPrice());
-				stockDto.setDate(stock.getDate());
-				stockDto.setStockId(stock.getStockId());
-				stockDto.setTimeStamp(stock.getTimeStamp());
-				stockDtos.add(stockDto);
+				List<StockDto> stockDtos = new ArrayList<StockDto>();
+				for (StockDao stock : stocks) {
+					StockDto stockDto = new StockDto();
+					stockDto.setPrice(stock.getPrice());
+					stockDto.setDate(stock.getDate());
+					stockDto.setStockId(stock.getStockId());
+					stockDto.setTimeStamp(stock.getTimeStamp());
+					stockDtos.add(stockDto);
 
-				if (minPrice == null || minPrice > stock.getPrice()) {
-					minPrice = stock.getPrice();
+					if (minPrice == null || minPrice > stock.getPrice()) {
+						minPrice = stock.getPrice();
+					}
+					if (maxPrice == null || maxPrice < stock.getPrice()) {
+						maxPrice = stock.getPrice();
+					}
+
+					stockPrices.add(stock.getPrice());
 				}
-				if (maxPrice == null || maxPrice < stock.getPrice()) {
-					maxPrice = stock.getPrice();
-				}
 
-				stockPrices.add(stock.getPrice());
+				OptionalDouble average = stockPrices.stream().mapToDouble(a -> a).average();
+				companyDetails.setAvgStockPrice(average.isPresent() ? average.getAsDouble() : 0);
+				companyDetails.setMinStockPrice(minPrice);
+				companyDetails.setMaxStockPrice(maxPrice);
+
+				companyDetails.setStocks(stockDtos);
 			}
-
-			OptionalDouble average = stockPrices.stream().mapToDouble(a -> a).average();
-			companyDetails.setAvgStockPrice(average.isPresent() ? average.getAsDouble() : 0);
-			companyDetails.setMinStockPrice(minPrice);
-			companyDetails.setMaxStockPrice(maxPrice);
-
-			companyDetails.setStocks(stockDtos);
+		} catch (Exception e) {
+			applicationLog.error("Error in finding company with company code: {}", companyCode);
 		}
-
 		applicationLog.info("Exiting filterStocks Service");
 		return companyDetails;
 	}
