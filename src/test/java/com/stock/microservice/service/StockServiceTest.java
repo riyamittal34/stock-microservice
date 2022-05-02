@@ -102,6 +102,11 @@ class StockServiceTest {
 		assertEquals(1, company.getStocks().size());
 	}
 
+	/**
+	 * Filter stocks test.
+	 *
+	 * @throws Exception the exception
+	 */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void filterStocksTest() throws Exception {

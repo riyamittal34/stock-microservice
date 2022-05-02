@@ -38,6 +38,7 @@ public class StockServiceImpl implements StockService {
 	@Autowired
 	StockRepository stockRepository;
 
+	/** The rest template. */
 	@Autowired
 	RestTemplate restTemplate;
 
