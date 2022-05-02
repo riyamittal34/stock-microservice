@@ -1,6 +1,6 @@
 spring:
   application:
-    name: stock-microservice
+    name: stock-service
   config:
     import: optional:configserver:http://localhost:8888/ 
 
@@ -17,4 +17,3 @@ logging:
   level:
     root: INFO
     org.package: INFO
-

@@ -97,7 +97,7 @@ public class StockServiceImpl implements StockService {
 		endDateFormatted = c.getTime();
 
 		List<StockDao> stocks = stockRepository.filterStock(companyCode, startDateFormatted, endDateFormatted);
-		String companyUrl = "http://stock-market-service/api/v1.0/market/company/info/" + companyCode;
+		String companyUrl = "http://company-service/api/v1.0/market/company/info/" + companyCode;
 		applicationLog.info("companyUrl: {}", companyUrl);
 
 		CompanyDto companyDetails = null;
