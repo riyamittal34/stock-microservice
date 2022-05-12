@@ -55,7 +55,7 @@ class StockServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void addCompanyStockTest() throws Exception {
+	void addCompanyStockTest() throws Exception {
 
 		when(stockRepository.save(any(StockDao.class))).thenReturn(getStockDaoObject());
 		Boolean isSuccess = stockService.addCompanyStock("abc", "{\"price\": 210.50}");
@@ -69,7 +69,7 @@ class StockServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void addCompanyStockMappingExceptionTest() throws Exception {
+	void addCompanyStockMappingExceptionTest() throws Exception {
 		Assertions.assertThrows(Exception.class, () -> {
 			stockService.addCompanyStock("abc", "TestData");
 		});
@@ -82,7 +82,7 @@ class StockServiceTest {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void filterStocksExceptionTest() throws Exception {
+	void filterStocksExceptionTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
 		stocks.add(getStockDaoObject());
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -109,7 +109,7 @@ class StockServiceTest {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void filterStocksTest() throws Exception {
+	void filterStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
 		stocks.add(getStockDaoObject());
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -130,7 +130,7 @@ class StockServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void fetchLatestStockPriceTest() throws Exception {
+	void fetchLatestStockPriceTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
 		stocks.add(getStockDaoObject());
 
@@ -146,7 +146,7 @@ class StockServiceTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void deleteCompanyStocksTest() throws Exception {
+	void deleteCompanyStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
 		stocks.add(getStockDaoObject());
 

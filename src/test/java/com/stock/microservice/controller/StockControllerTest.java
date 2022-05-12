@@ -47,7 +47,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void addCompanyStockTest() throws Exception {
+	void addCompanyStockTest() throws Exception {
 
 		when(stockService.addCompanyStock(anyString(), anyString())).thenReturn(true);
 		this.mockMvc.perform(post("/api/v1.0/market/stock/add/abc").content("{\"price\": 210.50}")).andDo(print())
@@ -60,7 +60,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void addCompanyStockExceptionTest() throws Exception {
+	void addCompanyStockExceptionTest() throws Exception {
 
 		when(stockService.addCompanyStock(anyString(), anyString())).thenThrow(Exception.class);
 		this.mockMvc.perform(post("/api/v1.0/market/stock/add/abc").content("{\"price\": 210.50}")).andDo(print())
@@ -74,7 +74,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void filterStocksTest() throws Exception {
+	void filterStocksTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(getCompanyObject());
 		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())
@@ -88,7 +88,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void filterStocksNullDataTest() throws Exception {
+	void filterStocksNullDataTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(null);
 		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())
@@ -102,7 +102,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void filterStocksExceptionTest() throws Exception {
+	void filterStocksExceptionTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenThrow(Exception.class);
 		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())

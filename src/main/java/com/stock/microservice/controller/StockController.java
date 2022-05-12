@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.stock.microservice.constants.StockConstants;
 import com.stock.microservice.dto.CompanyDto;
 import com.stock.microservice.dto.ResponseMessage;
 import com.stock.microservice.dto.StockResponse;
@@ -51,15 +52,15 @@ public class StockController {
 		try {
 			Boolean isSuccessful = stockService.addCompanyStock(companyCode, requestBody);
 			response.withData(isSuccessful);
-			applicationLog.info("Exiting addCompanyStock Controller");
+			applicationLog.info(StockConstants.EXITING_ADD_COMPANY_STOCK_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			errorLog.error("Error in adding Stocks. Error: {}", e.getMessage());
-			message.setCode("STOCK_ADD_FAILED");
+			message.setCode(StockConstants.STOCK_ADD_FAILED);
 			message.setDescription("Error in adding stock: " + e.getMessage());
 			response.withData(false);
 			response.withMessage(message);
-			applicationLog.info("Exiting addCompanyStock Controller");
+			applicationLog.info(StockConstants.EXITING_ADD_COMPANY_STOCK_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -80,28 +81,28 @@ public class StockController {
 		ResponseMessage message = new ResponseMessage();
 		try {
 			CompanyDto company = stockService.filterStocks(companyCode, startDate, endDate);
-			if (company != null && company.getStocks().size() > 0) {
-				message.setCode("FILTER_STOCK_SUCCESS");
+			if (company != null && !company.getStocks().isEmpty()) {
+				message.setCode(StockConstants.FILTER_STOCK_SUCCESS);
 				message.setDescription("Stocks Fetched");
 				response.withData(company);
 				response.withMessage(message);
-				applicationLog.info("Exiting filterStocks Controller");
+				applicationLog.info(StockConstants.EXITING_FILTER_STOCKS_CONTROLLER);
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			} else {
-				message.setCode("NO_STOCK_FOUND");
+				message.setCode(StockConstants.NO_STOCK_FOUND);
 				message.setDescription("No Stock found");
 				response.withData(null);
 				response.withMessage(message);
-				applicationLog.info("Exiting filterStocks Controller");
+				applicationLog.info(StockConstants.EXITING_FILTER_STOCKS_CONTROLLER);
 				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			errorLog.error("Error in filtering stocks. Error: {}", e.getMessage());
-			message.setCode("FILTER_STOCK_FAILED");
-			message.setDescription("Error in filtering stock: " + e.getMessage());
+			errorLog.error(StockConstants.FILTER_STOCK_ERROR + ": {}", e.getMessage());
+			message.setCode(StockConstants.FILTER_STOCK_FAILED);
+			message.setDescription(StockConstants.FILTER_STOCK_ERROR + ": " + e.getMessage());
 			response.withData(null);
 			response.withMessage(message);
-			applicationLog.info("Exiting filterStocks Controller");
+			applicationLog.info(StockConstants.EXITING_FILTER_STOCKS_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -121,27 +122,27 @@ public class StockController {
 		try {
 			Double companyStockPrice = stockService.fetchLatestStockPrice(companyCode);
 			if (companyStockPrice != null) {
-				message.setCode("LATEST_STOCK_PRICE_FETCHED");
+				message.setCode(StockConstants.LATEST_STOCK_PRICE_FETCHED);
 				message.setDescription("Latest stock price fetched");
 				response.withData(companyStockPrice);
 				response.withMessage(message);
-				applicationLog.info("Exiting fetchLatestStockPrice Controller");
+				applicationLog.info(StockConstants.EXITING_FETCH_LATEST_STOCK_PRICE_CONTROLLER);
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			} else {
-				message.setCode("NO_STOCK_FOUND");
+				message.setCode(StockConstants.NO_STOCK_FOUND);
 				message.setDescription("No Stock found");
 				response.withData(null);
 				response.withMessage(message);
-				applicationLog.info("Exiting fetchLatestStockPrice Controller");
+				applicationLog.info(StockConstants.EXITING_FETCH_LATEST_STOCK_PRICE_CONTROLLER);
 				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			errorLog.error("Error in filtering stocks. Error: {}", e.getMessage());
-			message.setCode("LATEST_STOCK_FETCH_FAILED");
-			message.setDescription("Error in fetching latest stock: " + e.getMessage());
+			errorLog.error(StockConstants.STOCK_FETCH_ERROR + "{}", e.getMessage());
+			message.setCode(StockConstants.LATEST_STOCK_FETCH_FAILED);
+			message.setDescription(StockConstants.STOCK_FETCH_ERROR + e.getMessage());
 			response.withData(null);
 			response.withMessage(message);
-			applicationLog.info("Exiting fetchLatestStockPrice Controller");
+			applicationLog.info(StockConstants.EXITING_FETCH_LATEST_STOCK_PRICE_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -160,19 +161,19 @@ public class StockController {
 		try {
 			Boolean isSuccessful = stockService.deleteCompanyStocks(companyCode);
 
-			message.setCode("COMPANY_STOCK_DELETED");
+			message.setCode(StockConstants.COMPANY_STOCK_DELETED);
 			message.setDescription("Company stocks deleted with company code: " + companyCode);
 			response.withData(isSuccessful);
 			response.withMessage(message);
-			applicationLog.info("Exiting deleteCompanyStocks Controller");
+			applicationLog.info(StockConstants.EXITING_DELETE_COMPANY_STOCK_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
-			errorLog.error("Error in filtering stocks. Error: {}", e.getMessage());
-			message.setCode("COMPANY_STOCK_DELETE_FAILED");
-			message.setDescription("Error in deleting company stocks: " + e.getMessage());
+			errorLog.error(StockConstants.STOCK_DELETE_ERROR + "{}", e.getMessage());
+			message.setCode(StockConstants.COMPANY_STOCK_DELETE_FAILED);
+			message.setDescription(StockConstants.STOCK_DELETE_ERROR + e.getMessage());
 			response.withData(null);
 			response.withMessage(message);
-			applicationLog.info("Exiting deleteCompanyStocks Controller");
+			applicationLog.info(StockConstants.EXITING_DELETE_COMPANY_STOCK_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
