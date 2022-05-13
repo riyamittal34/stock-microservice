@@ -11,11 +11,11 @@ public interface StockService {
 	 * Adds the company stock.
 	 *
 	 * @param companyCode the company code
-	 * @param requestBody the request body
+	 * @param stockPrice the stock price
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
-	public Boolean addCompanyStock(String companyCode, String requestBody) throws Exception;
+	public Boolean addCompanyStock(String companyCode, Double stockPrice) throws Exception;
 
 	/**
 	 * Filter stocks.

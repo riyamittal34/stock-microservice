@@ -5,12 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+
 /**
  * The Class MicroserviceApplication.
  */
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableEurekaClient
+@OpenAPIDefinition
 public class MicroserviceApplication {
 
 	/**

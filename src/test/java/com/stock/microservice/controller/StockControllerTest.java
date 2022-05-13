@@ -1,7 +1,6 @@
 package com.stock.microservice.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,10 +15,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.stock.microservice.dto.CompanyDto;
@@ -49,9 +50,12 @@ class StockControllerTest {
 	@Test
 	void addCompanyStockTest() throws Exception {
 
-		when(stockService.addCompanyStock(anyString(), anyString())).thenReturn(true);
-		this.mockMvc.perform(post("/api/v1.0/market/stock/add/abc").content("{\"price\": 210.50}")).andDo(print())
-				.andExpect(status().isOk()).andExpect(content().string(containsString("true"))).andReturn();
+		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble())).thenReturn(true);
+		this.mockMvc
+				.perform(post("/api/v1.0/market/stock/add/abc").content("210.50")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("true")))
+				.andReturn();
 	}
 
 	/**
@@ -62,9 +66,12 @@ class StockControllerTest {
 	@Test
 	void addCompanyStockExceptionTest() throws Exception {
 
-		when(stockService.addCompanyStock(anyString(), anyString())).thenThrow(Exception.class);
-		this.mockMvc.perform(post("/api/v1.0/market/stock/add/abc").content("{\"price\": 210.50}")).andDo(print())
-				.andExpect(status().isInternalServerError())
+		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble()))
+				.thenThrow(Exception.class);
+		this.mockMvc
+				.perform(post("/api/v1.0/market/stock/add/abc").content("210.50")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("STOCK_ADD_FAILED"))).andReturn();
 	}
 

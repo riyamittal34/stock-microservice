@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stock.microservice.dto.CompanyDto;
 import com.stock.microservice.dto.ResponseData;
 import com.stock.microservice.dto.StockDto;
@@ -31,9 +30,6 @@ public class StockServiceImpl implements StockService {
 	/** The application log. */
 	private final Logger applicationLog = LoggerFactory.getLogger("[APPLICATION]");
 
-	/** The error log. */
-	private final Logger errorLog = LoggerFactory.getLogger("[ERROR]");
-
 	/** The stock repository. */
 	@Autowired
 	StockRepository stockRepository;
@@ -46,25 +42,18 @@ public class StockServiceImpl implements StockService {
 	 * Adds the company stock.
 	 *
 	 * @param companyCode the company code
-	 * @param requestBody the request body
+	 * @param stockPrice the stock price
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
 	@Override
-	public Boolean addCompanyStock(String companyCode, String requestBody) throws Exception {
+	public Boolean addCompanyStock(String companyCode, Double stockPrice) throws Exception {
 		applicationLog.info("Entering addCompanyStock Service");
 		Boolean isSuccessful = true;
-		StockDto stockDto = null;
-		try {
-			stockDto = new ObjectMapper().readValue(requestBody, StockDto.class);
-		} catch (Exception e) {
-			errorLog.error("Error in mapping request body to stock. error: {}", e.getMessage());
-			throw e;
-		}
 
 		StockDao stock = new StockDao();
 		stock.setCompanyCode(companyCode);
-		stock.setPrice(stockDto.getPrice());
+		stock.setPrice(stockPrice);
 		stock.setDate(new Date());
 		stock.setTimeStamp(new Date().getTime());
 

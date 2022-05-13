@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.microservice.constants.StockConstants;
 import com.stock.microservice.dto.CompanyDto;
@@ -22,7 +22,7 @@ import com.stock.microservice.service.StockService;
 /**
  * The Class StockController.
  */
-@Controller
+@RestController
 @RequestMapping("/api/v1.0/market/stock")
 public class StockController {
 
@@ -40,17 +40,17 @@ public class StockController {
 	 * Adds the company stock.
 	 *
 	 * @param companyCode the company code
-	 * @param requestBody the request body
+	 * @param stockPrice the stock price
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/add/{companycode}")
 	public ResponseEntity<StockResponse<Boolean>> addCompanyStock(@PathVariable("companycode") String companyCode,
-			@RequestBody String requestBody) {
+			@RequestBody Double stockPrice) {
 		applicationLog.info("Entering addCompanyStock Controller");
 		StockResponse<Boolean> response = new StockResponse<>();
 		ResponseMessage message = new ResponseMessage();
 		try {
-			Boolean isSuccessful = stockService.addCompanyStock(companyCode, requestBody);
+			Boolean isSuccessful = stockService.addCompanyStock(companyCode, stockPrice);
 			response.withData(isSuccessful);
 			applicationLog.info(StockConstants.EXITING_ADD_COMPANY_STOCK_CONTROLLER);
 			return new ResponseEntity<>(response, HttpStatus.OK);

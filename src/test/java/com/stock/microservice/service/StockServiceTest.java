@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -58,22 +57,11 @@ class StockServiceTest {
 	void addCompanyStockTest() throws Exception {
 
 		when(stockRepository.save(any(StockDao.class))).thenReturn(getStockDaoObject());
-		Boolean isSuccess = stockService.addCompanyStock("abc", "{\"price\": 210.50}");
+		Boolean isSuccess = stockService.addCompanyStock("abc", 210.50);
 
 		assertTrue(isSuccess);
 	}
 
-	/**
-	 * Adds the company stock mapping exception test.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test
-	void addCompanyStockMappingExceptionTest() throws Exception {
-		Assertions.assertThrows(Exception.class, () -> {
-			stockService.addCompanyStock("abc", "TestData");
-		});
-	}
 
 	/**
 	 * Filter stocks test.
