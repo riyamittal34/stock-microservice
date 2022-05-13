@@ -52,7 +52,7 @@ class StockControllerTest {
 
 		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble())).thenReturn(true);
 		this.mockMvc
-				.perform(post("/api/v1.0/market/stock/add/abc").content("210.50")
+				.perform(post("/add/abc").content("210.50")
 						.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("true")))
 				.andReturn();
@@ -69,7 +69,7 @@ class StockControllerTest {
 		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble()))
 				.thenThrow(Exception.class);
 		this.mockMvc
-				.perform(post("/api/v1.0/market/stock/add/abc").content("210.50")
+				.perform(post("/add/abc").content("210.50")
 						.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("STOCK_ADD_FAILED"))).andReturn();
@@ -84,7 +84,7 @@ class StockControllerTest {
 	void filterStocksTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(getCompanyObject());
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())
+		this.mockMvc.perform(get("/get/abc/12-01-2022/21-01-2022")).andDo(print())
 				.andExpect(status().isOk()).andExpect(content().string(containsString("FILTER_STOCK_SUCCESS")))
 				.andReturn();
 	}
@@ -98,7 +98,7 @@ class StockControllerTest {
 	void filterStocksNullDataTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(null);
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())
+		this.mockMvc.perform(get("/get/abc/12-01-2022/21-01-2022")).andDo(print())
 				.andExpect(status().isNotFound()).andExpect(content().string(containsString("NO_STOCK_FOUND")))
 				.andReturn();
 	}
@@ -112,7 +112,7 @@ class StockControllerTest {
 	void filterStocksExceptionTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenThrow(Exception.class);
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/abc/12-01-2022/21-01-2022")).andDo(print())
+		this.mockMvc.perform(get("/get/abc/12-01-2022/21-01-2022")).andDo(print())
 				.andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("FILTER_STOCK_FAILED"))).andReturn();
 	}
@@ -127,7 +127,7 @@ class StockControllerTest {
 	void getLatestStockPriceTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenReturn(300.0);
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/stockPrice/abc")).andDo(print()).andExpect(status().isOk())
+		this.mockMvc.perform(get("/get/stockPrice/abc")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(containsString("LATEST_STOCK_PRICE_FETCHED"))).andReturn();
 	}
 
@@ -141,7 +141,7 @@ class StockControllerTest {
 	void getLatestStockPriceNullDataTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenReturn(null);
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/stockPrice/abc")).andDo(print())
+		this.mockMvc.perform(get("/get/stockPrice/abc")).andDo(print())
 				.andExpect(status().isNotFound()).andExpect(content().string(containsString("NO_STOCK_FOUND")))
 				.andReturn();
 	}
@@ -156,7 +156,7 @@ class StockControllerTest {
 	void getLatestStockPriceExceptionTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenThrow(Exception.class);
-		this.mockMvc.perform(get("/api/v1.0/market/stock/get/stockPrice/abc")).andDo(print())
+		this.mockMvc.perform(get("/get/stockPrice/abc")).andDo(print())
 				.andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("LATEST_STOCK_FETCH_FAILED"))).andReturn();
 	}
@@ -170,7 +170,7 @@ class StockControllerTest {
 	void deleteCompanyStocksTest() throws Exception {
 
 		when(stockService.deleteCompanyStocks("abc")).thenReturn(true);
-		this.mockMvc.perform(delete("/api/v1.0/market/stock/delete/abc")).andDo(print()).andExpect(status().isOk())
+		this.mockMvc.perform(delete("/delete/abc")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(containsString("COMPANY_STOCK_DELETED"))).andReturn();
 	}
 
@@ -183,7 +183,7 @@ class StockControllerTest {
 	void deleteCompanyStocksExceptionTest() throws Exception {
 
 		when(stockService.deleteCompanyStocks("abc")).thenThrow(Exception.class);
-		this.mockMvc.perform(delete("/api/v1.0/market/stock/delete/abc")).andDo(print())
+		this.mockMvc.perform(delete("/delete/abc")).andDo(print())
 				.andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("COMPANY_STOCK_DELETE_FAILED"))).andReturn();
 	}
