@@ -47,7 +47,7 @@ public class StockServiceImpl implements StockService {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@Value("{auth.user.pass}")
+	@Value("${auth.user.pass}")
 	String pass;
 
 	/**
