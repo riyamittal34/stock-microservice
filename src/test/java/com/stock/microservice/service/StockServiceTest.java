@@ -17,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -61,7 +63,6 @@ class StockServiceTest {
 		assertTrue(isSuccess);
 	}
 
-
 	/**
 	 * Filter stocks test.
 	 *
@@ -82,8 +83,8 @@ class StockServiceTest {
 		ResponseEntity<ResponseData> responseEntity = new ResponseEntity<>(responseData, HttpStatus.OK);
 
 		when(stockRepository.filterStock("abc", startDate, endDate)).thenReturn(stocks);
-		when(restTemplate.getForEntity(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class)))
-				.thenReturn(responseEntity);
+		when(restTemplate.exchange(ArgumentMatchers.anyString(), ArgumentMatchers.any(HttpMethod.class),
+				ArgumentMatchers.any(HttpEntity.class), ArgumentMatchers.any(Class.class))).thenReturn(responseEntity);
 		CompanyDto company = stockService.filterStocks(companyDto.getCompanyCode(), "12-01-2022", "21-01-2022");
 
 		assertEquals(1, company.getStocks().size());

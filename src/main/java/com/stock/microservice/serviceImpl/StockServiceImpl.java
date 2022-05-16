@@ -5,13 +5,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.stock.microservice.dto.CompanyDto;
@@ -92,7 +99,7 @@ public class StockServiceImpl implements StockService {
 		CompanyDto companyDetails = null;
 		ResponseEntity<ResponseData> response = null;
 		try {
-			response = restTemplate.getForEntity(companyUrl, ResponseData.class);
+			response = restTemplate.exchange(companyUrl, HttpMethod.GET, getAuthToken(), ResponseData.class);
 			applicationLog.info("response: {}", response.getStatusCode());
 			if (response.getStatusCode().is2xxSuccessful()) {
 				applicationLog.info("responseBody: {}", response.getBody());
@@ -178,5 +185,31 @@ public class StockServiceImpl implements StockService {
 
 		applicationLog.info("Exiting deleteCompanyStocks Service");
 		return isSuccessful;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private HttpEntity<String> getAuthToken() {
+		String token = null;
+		
+		String url = "http://company-service/api/v1.0/market/company/login";
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("username", "riya");
+		body.add("password", "riya@123");
+		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(body, header);
+		try {
+			ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+			Map<String, String> responseBody = (Map<String, String>) response.getBody();
+			token = responseBody.get("access_token");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + token);
+		HttpEntity<String> getEntity = new HttpEntity<>(headers);
+		return getEntity;
 	}
 }
