@@ -19,4 +19,6 @@ public class StockConstants {
 	public static final String COMPANY_STOCK_DELETE_FAILED = "COMPANY_STOCK_DELETE_FAILED";
 	public static final String STOCK_DELETE_ERROR = "Error in deleting company stocks: ";
 	
+	public static final String STOCK_PASS = "password";
+	
 }

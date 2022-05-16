@@ -11,6 +11,7 @@ import java.util.OptionalDouble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.stock.microservice.constants.StockConstants;
 import com.stock.microservice.dto.CompanyDto;
 import com.stock.microservice.dto.ResponseData;
 import com.stock.microservice.dto.StockDto;
@@ -44,12 +46,15 @@ public class StockServiceImpl implements StockService {
 	/** The rest template. */
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Value("{auth.user.pass}")
+	String pass;
 
 	/**
 	 * Adds the company stock.
 	 *
 	 * @param companyCode the company code
-	 * @param stockPrice the stock price
+	 * @param stockPrice  the stock price
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
@@ -186,27 +191,28 @@ public class StockServiceImpl implements StockService {
 		applicationLog.info("Exiting deleteCompanyStocks Service");
 		return isSuccessful;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private HttpEntity<String> getAuthToken() {
 		String token = null;
-		
+
 		String url = "http://company-service/api/v1.0/market/company/login";
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
 		body.add("username", "riya");
-		body.add("password", "riya@123");
+		body.add(StockConstants.STOCK_PASS, pass);
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(body, header);
 		try {
 			ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
 			Map<String, String> responseBody = (Map<String, String>) response.getBody();
-			token = responseBody.get("access_token");
+			if (responseBody != null)
+				token = responseBody.get("access_token");
 		} catch (Exception e) {
-			e.printStackTrace();
+			applicationLog.error("Error in fetching token");
 		}
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + token);
 		HttpEntity<String> getEntity = new HttpEntity<>(headers);
