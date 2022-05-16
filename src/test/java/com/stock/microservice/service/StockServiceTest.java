@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -24,10 +23,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.stock.microservice.dto.CompanyDto;
 import com.stock.microservice.dto.ResponseData;
-import com.stock.microservice.dto.StockDto;
 import com.stock.microservice.entity.StockDao;
 import com.stock.microservice.repository.StockRepository;
 import com.stock.microservice.serviceImpl.StockServiceImpl;
+import com.stock.microservice.util.MockSample;
 
 /**
  * The Class StockServiceTest.
@@ -56,7 +55,7 @@ class StockServiceTest {
 	@Test
 	void addCompanyStockTest() throws Exception {
 
-		when(stockRepository.save(any(StockDao.class))).thenReturn(getStockDaoObject());
+		when(stockRepository.save(any(StockDao.class))).thenReturn(MockSample.getStockDaoObject());
 		Boolean isSuccess = stockService.addCompanyStock("abc", 210.50);
 
 		assertTrue(isSuccess);
@@ -72,13 +71,13 @@ class StockServiceTest {
 	@Test
 	void filterStocksExceptionTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
-		stocks.add(getStockDaoObject());
+		stocks.add(MockSample.getStockDaoObject());
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date startDate = formatter.parse("12-01-2022");
 		Date endDate = formatter.parse("22-01-2022");
 
 		ResponseData responseData = new ResponseData();
-		CompanyDto companyDto = getCompanyObject();
+		CompanyDto companyDto = MockSample.getCompanyObject();
 		responseData.setData(companyDto);
 		ResponseEntity<ResponseData> responseEntity = new ResponseEntity<>(responseData, HttpStatus.OK);
 
@@ -99,7 +98,7 @@ class StockServiceTest {
 	@Test
 	void filterStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
-		stocks.add(getStockDaoObject());
+		stocks.add(MockSample.getStockDaoObject());
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date startDate = formatter.parse("12-01-2022");
 		Date endDate = formatter.parse("22-01-2022");
@@ -120,7 +119,7 @@ class StockServiceTest {
 	@Test
 	void fetchLatestStockPriceTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
-		stocks.add(getStockDaoObject());
+		stocks.add(MockSample.getStockDaoObject());
 
 		when(stockRepository.findByCompanyCode("abc")).thenReturn(stocks);
 		Double price = stockService.fetchLatestStockPrice("abc");
@@ -136,61 +135,12 @@ class StockServiceTest {
 	@Test
 	void deleteCompanyStocksTest() throws Exception {
 		List<StockDao> stocks = new ArrayList<StockDao>();
-		stocks.add(getStockDaoObject());
+		stocks.add(MockSample.getStockDaoObject());
 
 		when(stockRepository.findByCompanyCode("abc")).thenReturn(stocks);
 		Boolean isSuccessful = stockService.deleteCompanyStocks("abc");
 
 		assertTrue(isSuccessful);
-	}
-
-	/**
-	 * Gets the stock object.
-	 *
-	 * @return the stock object
-	 */
-	private StockDto getStockObject() {
-		StockDto stock = new StockDto();
-		stock.setPrice(200.50);
-		stock.setStockId(UUID.randomUUID().toString());
-		stock.setDate(new Date());
-		stock.setTimeStamp(new Date().getTime());
-		return stock;
-	}
-
-	/**
-	 * Gets the stock dao object.
-	 *
-	 * @return the stock dao object
-	 */
-	private StockDao getStockDaoObject() {
-		StockDao stock = new StockDao();
-		stock.setPrice(200.50);
-		stock.setStockId(UUID.randomUUID().toString());
-		stock.setDate(new Date());
-		stock.setTimeStamp(new Date().getTime());
-		return stock;
-	}
-
-	/**
-	 * Gets the company object.
-	 *
-	 * @return the company object
-	 */
-	private CompanyDto getCompanyObject() {
-		CompanyDto company = new CompanyDto();
-		company.setCompanyCode("abc");
-		company.setCompanyId(UUID.randomUUID().toString());
-		company.setCompanyName("ABC Company");
-		company.setCompanyTurnover("10000000000");
-		company.setCompanyWebsite("http://www.google.com");
-		company.setCompanyCeo("Riya Mittal");
-		company.setStockExchange("NSE");
-
-		List<StockDto> stocks = new ArrayList<StockDto>();
-		stocks.add(getStockObject());
-		company.setStocks(stocks);
-		return company;
 	}
 
 }

@@ -9,11 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +16,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.stock.microservice.dto.CompanyDto;
-import com.stock.microservice.dto.StockDto;
 import com.stock.microservice.service.StockService;
+import com.stock.microservice.util.MockSample;
 
 /**
  * The Class StockControllerTest.
  */
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class StockControllerTest {
 
 	/** The mock mvc. */
@@ -48,6 +43,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void addCompanyStockTest() throws Exception {
 
 		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble())).thenReturn(true);
@@ -64,6 +60,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void addCompanyStockExceptionTest() throws Exception {
 
 		when(stockService.addCompanyStock(ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble()))
@@ -81,9 +78,10 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void filterStocksTest() throws Exception {
 
-		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(getCompanyObject());
+		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(MockSample.getCompanyObject());
 		this.mockMvc.perform(get("/get/abc/12-01-2022/21-01-2022")).andDo(print())
 				.andExpect(status().isOk()).andExpect(content().string(containsString("FILTER_STOCK_SUCCESS")))
 				.andReturn();
@@ -95,6 +93,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void filterStocksNullDataTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenReturn(null);
@@ -109,6 +108,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void filterStocksExceptionTest() throws Exception {
 
 		when(stockService.filterStocks("abc", "12-01-2022", "21-01-2022")).thenThrow(Exception.class);
@@ -124,6 +124,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void getLatestStockPriceTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenReturn(300.0);
@@ -138,6 +139,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void getLatestStockPriceNullDataTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenReturn(null);
@@ -153,6 +155,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void getLatestStockPriceExceptionTest() throws Exception {
 
 		when(stockService.fetchLatestStockPrice("abc")).thenThrow(Exception.class);
@@ -167,6 +170,7 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void deleteCompanyStocksTest() throws Exception {
 
 		when(stockService.deleteCompanyStocks("abc")).thenReturn(true);
@@ -180,42 +184,12 @@ class StockControllerTest {
 	 * @throws Exception the exception
 	 */
 	@Test
+	@WithMockUser
 	void deleteCompanyStocksExceptionTest() throws Exception {
 
 		when(stockService.deleteCompanyStocks("abc")).thenThrow(Exception.class);
 		this.mockMvc.perform(delete("/delete/abc")).andDo(print())
 				.andExpect(status().isInternalServerError())
 				.andExpect(content().string(containsString("COMPANY_STOCK_DELETE_FAILED"))).andReturn();
-	}
-
-	/**
-	 * Gets the stock object.
-	 *
-	 * @return the stock object
-	 */
-	private StockDto getStockObject() {
-		StockDto stock = new StockDto();
-		stock.setPrice(200.50);
-		stock.setStockId(UUID.randomUUID().toString());
-		stock.setDate(new Date());
-		stock.setTimeStamp(new Date().getTime());
-		return stock;
-	}
-
-	/**
-	 * Gets the company object.
-	 *
-	 * @return the company object
-	 */
-	private CompanyDto getCompanyObject() {
-		CompanyDto company = new CompanyDto();
-		company.setCompanyCode("abc");
-		company.setCompanyId(UUID.randomUUID().toString());
-		company.setCompanyName("ABC Company");
-
-		List<StockDto> stocks = new ArrayList<StockDto>();
-		stocks.add(getStockObject());
-		company.setStocks(stocks);
-		return company;
 	}
 }

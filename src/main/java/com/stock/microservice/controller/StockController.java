@@ -18,6 +18,9 @@ import com.stock.microservice.dto.ResponseMessage;
 import com.stock.microservice.dto.StockResponse;
 import com.stock.microservice.service.StockService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 /**
  * The Class StockController.
  */
@@ -42,6 +45,7 @@ public class StockController {
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/add/{companycode}")
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<StockResponse<Boolean>> addCompanyStock(@PathVariable("companycode") String companyCode,
 			@RequestBody Double stockPrice) {
 		applicationLog.info("Entering addCompanyStock Controller");
@@ -72,6 +76,7 @@ public class StockController {
 	 * @return the response entity
 	 */
 	@GetMapping(value = "/get/{companycode}/{startdate}/{enddate}")
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<StockResponse<CompanyDto>> filterStocks(@PathVariable("companycode") String companyCode,
 			@PathVariable("startdate") String startDate, @PathVariable("enddate") String endDate) {
 		applicationLog.info("Entering filterStocks Controller");
@@ -112,6 +117,7 @@ public class StockController {
 	 * @return the response entity
 	 */
 	@GetMapping(value = "/get/stockPrice/{companycode}")
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<StockResponse<Double>> fetchLatestStockPrice(
 			@PathVariable("companycode") String companyCode) {
 		applicationLog.info("Entering fetchLatestStockPrice Controller");
@@ -152,6 +158,7 @@ public class StockController {
 	 * @return the response entity
 	 */
 	@DeleteMapping(value = "/delete/{companycode}")
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<StockResponse<Boolean>> deleteCompanyStocks(@PathVariable("companycode") String companyCode) {
 		applicationLog.info("Entering deleteCompanyStocks Controller");
 		StockResponse<Boolean> response = new StockResponse<>();
