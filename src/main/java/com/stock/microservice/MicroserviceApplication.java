@@ -8,15 +8,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-
 /**
  * The Class MicroserviceApplication.
  */
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableEurekaClient
-@OpenAPIDefinition
 public class MicroserviceApplication {
 
 	/**
