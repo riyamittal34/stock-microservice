@@ -21,7 +21,7 @@ public interface StockRepository extends MongoRepository<StockDao, String> {
 	 * @param endDate the end date
 	 * @return the list
 	 */
-	@Query("{'companyCode': ?0, 'date': {$gte: ?1}, 'date': {$lte: ?2}}")
+	@Query("{'companyCode': ?0, 'date': {$gte: ?1, $lte: ?2}}")
 	public List<StockDao> filterStock(String companyCode, Date startDate, Date endDate);
 
 	/**
