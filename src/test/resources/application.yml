@@ -21,4 +21,6 @@ logging:
     root: INFO
     org.package: INFO
 
-  
+auth:
+  user:
+    pass: riya@123
