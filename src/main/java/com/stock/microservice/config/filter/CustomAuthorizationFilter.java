@@ -32,6 +32,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, enctype");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        
 		if (request.getServletPath().equals("/login")) {
 			filterChain.doFilter(request, response);
 		} else if ("OPTIONS".equals(request.getMethod())) {

@@ -5,7 +5,7 @@ spring:
   application:
     name: stock-microservice
   config:
-    import: optional:configserver:http://localhost:8888/ 
+    import: optional:configserver:http://e-stock-market.us-west-2.elasticbeanstalk.com/ 
 
 management:
   endpoints:

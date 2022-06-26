@@ -2,7 +2,7 @@ spring:
   application:
     name: stock-service
   config:
-    import: optional:configserver:http://localhost:8888/ 
+    import: optional:configserver:http://e-stock-market.us-west-2.elasticbeanstalk.com/ 
 
 server:
   servlet:
@@ -17,7 +17,7 @@ management:
         
 logging: 
   file: 
-    name: C:\Users\User\Desktop\Gi_Workspace\logs\stock.log
+    name: logs/stock.log
   level:
     root: INFO
     org.package: INFO
